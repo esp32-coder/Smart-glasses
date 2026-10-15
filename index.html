@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Glasses</title>
+
+<style>
+  body {
+    margin: 0;
+    padding: 22px;
+    font-family: Arial, sans-serif;
+    background: #101827;
+    color: white;
+    text-align: center;
+  }
+
+  h1 { color: #66e3ff; }
+
+  .card {
+    background: #202c40;
+    padding: 20px;
+    margin: 16px 0;
+    border-radius: 16px;
+  }
+
+  .value {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 12px;
+  }
+
+  button {
+    width: 100%;
+    padding: 15px;
+    margin: 7px 0;
+    border: 0;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: bold;
+    background: #66e3ff;
+    color: #101827;
+  }
+
+  .stop { background: #ff7777; }
+
+  #status { color: #b9c8dc; }
+</style>
+</head>
+
+<body>
+<h1>Smart Glasses</h1>
+<p id="status">Website ready — ESP32 not connected</p>
+
+<div class="card">
+  <h2>Obstacle Detection</h2>
+  <div class="value" id="distance">-- cm</div>
+  <button onclick="testObstacle()">Test obstacle voice</button>
+</div>
+
+<div class="card">
+  <h2>Indian Currency</h2>
+  <div class="value" id="currency">Waiting for note</div>
+  <button onclick="testCurrency()">Test currency voice</button>
+</div>
+
+<div class="card">
+  <h2>Voice Settings</h2>
+  <button onclick="enableVoice()">Enable voice</button>
+  <button class="stop" onclick="stopVoice()">Stop speaking</button>
+</div>
+
+<script>
+function speak(message) {
+  if (!("speechSynthesis" in window)) {
+    document.getElementById("status").textContent =
+      "Speech is not supported in this browser";
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const speech = new SpeechSynthesisUtterance(message);
+  speech.lang = "en-IN";
+  speech.rate = 1;
+  speech.volume = 1;
+
+  window.speechSynthesis.speak(speech);
+}
+
+function enableVoice() {
+  speak("Smart glasses voice alerts are ready.");
+}
+
+function testObstacle() {
+  document.getElementById("distance").textContent = "50 cm";
+  speak("Warning. Obstacle detected at 50 centimetres.");
+}
+
+function testCurrency() {
+  document.getElementById("currency").textContent = "₹50 detected";
+  speak("50 rupees detected.");
+}
+
+function stopVoice() {
+  window.speechSynthesis.cancel();
+}
+</script>
+</body>
+</html>
